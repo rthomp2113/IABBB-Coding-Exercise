@@ -1,38 +1,48 @@
+import React from 'react';
+import { Button, TextField } from '@material-ui/core';
+
 const Form = (props) => {
     const { 
         searchHandler,
-        clearHandler, 
+        clearHandler,
+        clearListHandler, 
         latitude, 
         longitude, 
         setLatitude, 
         setLongitude, 
-        getLocation 
+        getLocation,
+        locationData
     } = props;
 
+    const isClearDisabled = latitude === "" && longitude === "";
+    const isClearListDisabled = locationData === undefined || locationData.errors === 'No locations within 50 miles.';
+    
     return (
-        <form>
-            <label> Latitude </label>
-            <input 
-                type="number" 
+        <React.Fragment>
+            <TextField 
+                label="Latitude"
+                type="number"
                 id="latitude" 
                 name="latitude" 
+                inputProps={{ max: 90, min: -90 }}
                 value={latitude}
                 onChange={(event) => setLatitude(event.target.value)}
-                />
-            <br />
-            <label> Longitude </label>
-            <input 
+            />
+            <TextField 
+                label="Longitude"
                 type="number" 
+                inputProps={{ max: 180, min: -180 }}
                 id="longitude" 
                 name="longitude" 
                 value={longitude}
                 onChange={(event) => setLongitude(event.target.value)}
-                />
+            />
+            <Button onClick={clearHandler} variant="outlined" color="inherit" disabled={isClearDisabled}> Clear </Button>
             <br />
-            <input type="button" value="Near Me" onClick={getLocation}/>
-            <input type="button" value="Search" onClick={searchHandler}/>
-            <input type="button" value="Clear" onClick={clearHandler}/>
-        </form>
+            <Button onClick={searchHandler}  variant="outlined" color="primary" > Search </Button>
+            <Button onClick={getLocation} variant="outlined" color="inherit"> Near Me </Button>
+            <Button onClick={clearListHandler} variant="outlined" color="secondary" disabled={isClearListDisabled}> Clear List </Button>     
+        </React.Fragment>
     )
 }
 
