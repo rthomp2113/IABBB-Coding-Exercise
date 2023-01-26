@@ -1,23 +1,70 @@
-import logo from './logo.svg';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import Form from './components/Form';
 import './App.css';
 
 function App() {
+  const [locationData, setLocationData] = useState();
+  const [latitude, setLatitude] = useState('');
+  const [longitude, setLongitude] = useState('');
+  const [search, setSearch] = useState(false);
+
+  useEffect(() => { //API call to get pinball locations within 50 miles
+    const source = axios.CancelToken.source();
+    if(search === true){
+      axios.get("http://pinballmap.com///api/v1/locations/closest_by_lat_lon.json", {
+        params: {lat: latitude, lon: longitude, send_all_within_distance: "50"},
+      })
+      .then(response => {
+        const locationResponseData = response.data;
+        setLocationData(locationResponseData);
+      })
+      return () => {
+        source.cancel()
+      }
+    }
+  }, [latitude, longitude, search])
+
+  const getLocation = () => { //grabs user's current geolocation info
+    if(navigator.geolocation){
+      navigator.geolocation.getCurrentPosition(getPosition)
+    }else{
+
+    }
+  }
+
+  const getPosition = (position) => {//sets user's current geolocation info
+    setLatitude(position.coords.latitude)
+    setLongitude(position.coords.longitude)
+  }
+
+  const handleSearch = () => {
+    if(latitude && longitude){
+      setSearch(true);
+      setLatitude(latitude.toString())
+      setLongitude(longitude.toString())
+      setTimeout(() => setSearch(false), 1000)
+    }else{
+      alert("Fill in longitude and longitude")
+    }
+  }
+ 
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1> Pinball Machine Locator </h1>
+      <Form 
+        onClick={handleSearch} 
+        latitude={latitude} 
+        longitude={longitude}
+        setLatitude={setLatitude}
+        setLongitude={setLongitude}
+        getLocation={getLocation}
+        />
+      <h1> Machines within 50 Miles of Coordinates </h1>
+      {(!locationData || (typeof locationData?.locations) === 'string') && "No results displayed"}
+      {locationData && locationData?.locations ? (locationData?.locations).map((location, index) => {
+        return <h6 key={index}>{`${index + 1}. ${location.name}   - ${location.street}${location.city}, ${location.state}`}</h6>
+      }) : <h1> No Results </h1>}
     </div>
   );
 }
