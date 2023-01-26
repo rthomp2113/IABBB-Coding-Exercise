@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useGeolocated } from 'react-geolocated';
 import axios from 'axios';
 import Form from './components/Form';
 import { Typography, Divider, ListItemText } from '@material-ui/core';
+
 import './App.css';
 
 function App() {
@@ -28,17 +30,18 @@ function App() {
     };
   }, [latitude, longitude, search]);
 
+  const { coords, isGeolocationAvailable } = useGeolocated({ positionOptions: { enableHighAccuracy: true } })
   const getLocation = () => { //grabs user's current geolocation info
-    if(navigator.geolocation){
-      navigator.geolocation.getCurrentPosition(getPosition);
+    if(isGeolocationAvailable){
+      getPosition()
     }else{
       alert("No geolocation data available. Please enter geo-coordinates manually.");
     };
   };
 
-  const getPosition = (position) => {//sets user's current geolocation info
-    setLatitude(position.coords.latitude);
-    setLongitude(position.coords.longitude);
+  const getPosition = () => {//sets user's current geolocation info
+    setLatitude(coords.latitude);
+    setLongitude(coords.longitude);
     setIsValidator(false);
   };
 
