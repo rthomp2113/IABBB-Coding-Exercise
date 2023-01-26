@@ -29,7 +29,7 @@ function App() {
     if(navigator.geolocation){
       navigator.geolocation.getCurrentPosition(getPosition)
     }else{
-
+      alert("No geolocation data available.")
     }
   }
 
@@ -38,7 +38,7 @@ function App() {
     setLongitude(position.coords.longitude)
   }
 
-  const handleSearch = () => {
+  const searchHandler = () => {
     if(latitude && longitude){
       setSearch(true);
       setLatitude(latitude.toString())
@@ -48,12 +48,18 @@ function App() {
       alert("Fill in longitude and longitude")
     }
   }
+
+  const clearHandler = () => {
+    setLatitude('');
+    setLongitude('');
+  }
  
   return (
     <div className="App">
       <h1> Pinball Machine Locator </h1>
       <Form 
-        onClick={handleSearch} 
+        searchHandler={searchHandler}
+        clearHandler={clearHandler} 
         latitude={latitude} 
         longitude={longitude}
         setLatitude={setLatitude}
@@ -61,10 +67,12 @@ function App() {
         getLocation={getLocation}
         />
       <h1> Machines within 50 Miles of Coordinates </h1>
-      {(!locationData || (typeof locationData?.locations) === 'string') && "No results displayed"}
+      <h1>{(typeof(locationData?.locations?.length) !== 'undefined' && locationData?.locations?.length > 1) && `${locationData?.locations?.length} Results`}</h1>
+      <h1>{(typeof(locationData?.locations?.length) !== 'undefined' && locationData?.locations?.length === 1) && `${locationData?.locations?.length} Result`}</h1>
       {locationData && locationData?.locations ? (locationData?.locations).map((location, index) => {
-        return <h6 key={index}>{`${index + 1}. ${location.name}   - ${location.street}${location.city}, ${location.state}`}</h6>
+        return <h6 key={index}>{`${index + 1}. ${location.name}   - ${location.street} ${location.city}, ${location.state}`}</h6>
       }) : <h1> No Results </h1>}
+      {(!locationData || (typeof locationData?.locations) === 'undefined') && "No results displayed"}
     </div>
   );
 }

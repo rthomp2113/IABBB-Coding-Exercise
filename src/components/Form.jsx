@@ -1,13 +1,14 @@
 const Form = (props) => {
     const { 
-        onClick, 
+        searchHandler,
+        clearHandler, 
         latitude, 
         longitude, 
         setLatitude, 
         setLongitude, 
         getLocation 
     } = props;
-    
+
     return (
         <form>
             <label> Latitude </label>
@@ -29,7 +30,8 @@ const Form = (props) => {
                 />
             <br />
             <input type="button" value="Near Me" onClick={getLocation}/>
-            <input type="button" value="Search" onClick={onClick}/>
+            <input type="button" value="Search" onClick={searchHandler}/>
+            <input type="button" value="Clear" onClick={clearHandler}/>
         </form>
     )
 }
