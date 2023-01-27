@@ -1,3 +1,17 @@
+# Pinball Machine Locator
+
+This is a React.js project.
+
+## What it does
+
+Enter your latitude and longitude coordinates and the application will show a list of all pinball machine locations within 50 miles.
+
+## Dependencies
+
+The "NEAR ME" button requires your browser's location services to be active in order to work.
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
