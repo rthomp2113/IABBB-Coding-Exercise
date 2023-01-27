@@ -28,7 +28,7 @@ const Form = (props) => {
                         type="number"
                         id="latitude" 
                         name="latitude" 
-                        inputProps={{ max: 90, min: -90 }}
+                        inputProps={{ max: 90, min: -90, step: 0.0001 }}
                         value={latitude}
                         onChange={(event) => setLatitude(event.target.value)}
                     />
@@ -37,7 +37,8 @@ const Form = (props) => {
                     <TextField 
                         label="Longitude"
                         type="number" 
-                        inputProps={{ max: 180, min: -180 }}
+                        
+                        inputProps={{ max: 180, min: -180, step: 0.0001}}
                         id="longitude" 
                         name="longitude" 
                         value={longitude}
