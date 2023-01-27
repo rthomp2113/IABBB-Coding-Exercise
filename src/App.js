@@ -17,7 +17,7 @@ function App() {
   useEffect(() => { //API call to get pinball locations within 50 miles
     let isApiSubcribed = true;
     if(search === true && isApiSubcribed){
-      axios.get("http://pinballmap.com///api/v1/locations/closest_by_lat_lon.json", {
+      axios.get("http://pinballmap.com/api/v1/locations/closest_by_lat_lon.json", {
         params: {lat: latitude, lon: longitude, send_all_within_distance: "50"},
       })
       .then(response => {
