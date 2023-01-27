@@ -28,6 +28,7 @@ const Form = (props) => {
                 value={latitude}
                 onChange={(event) => setLatitude(event.target.value)}
             />
+            <br />
             <TextField 
                 label="Longitude"
                 type="number" 
@@ -37,6 +38,7 @@ const Form = (props) => {
                 value={longitude}
                 onChange={(event) => setLongitude(event.target.value)}
             />
+            <br />
             <Button onClick={clearHandler} variant="outlined" color="inherit" disabled={isClearDisabled}> Clear </Button>
             <br />
             <Button onClick={searchHandler}  variant="outlined" color="primary" > Search </Button>
