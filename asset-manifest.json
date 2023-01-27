@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/IABBB-Coding-Exercise/static/css/main.fcc84656.css",
+    "main.css": "/IABBB-Coding-Exercise/static/css/main.543c2c9f.css",
     "main.js": "/IABBB-Coding-Exercise/static/js/main.7c35ec3d.js",
     "index.html": "/IABBB-Coding-Exercise/index.html",
-    "main.fcc84656.css.map": "/IABBB-Coding-Exercise/static/css/main.fcc84656.css.map",
+    "main.543c2c9f.css.map": "/IABBB-Coding-Exercise/static/css/main.543c2c9f.css.map",
     "main.7c35ec3d.js.map": "/IABBB-Coding-Exercise/static/js/main.7c35ec3d.js.map"
   },
   "entrypoints": [
-    "static/css/main.fcc84656.css",
+    "static/css/main.543c2c9f.css",
     "static/js/main.7c35ec3d.js"
   ]
 }
