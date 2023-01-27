@@ -7,8 +7,7 @@ const theme = createTheme({
     palette: {
         primary: green,
         secondary: red,
-    }
-    
+    },
 })
 
 export default theme;
