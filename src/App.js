@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import Header from './components/Header';
+import Form from './components/Form';
+import List from './components/List';
+import Validators from './components/Validators';
 import { useGeolocated } from 'react-geolocated';
 import axios from 'axios';
-import Form from './components/Form';
-import { Typography, Divider, ListItemText } from '@material-ui/core';
-
 import './App.css';
 
 function App() {
@@ -30,7 +31,8 @@ function App() {
     };
   }, [latitude, longitude, search]);
 
-  const { coords, isGeolocationAvailable } = useGeolocated({ positionOptions: { enableHighAccuracy: true } })
+  const { coords, isGeolocationAvailable } = useGeolocated({ positionOptions: { enableHighAccuracy: true } });
+
   const getLocation = () => { //grabs user's current geolocation info
     if(isGeolocationAvailable){
       getPosition()
@@ -51,6 +53,7 @@ function App() {
       setLatitude(latitude.toString());
       setLongitude(longitude.toString());
       setIsClear(false);
+      setIsValidator(false);
       setTimeout(() => setSearch(false), 1000);
     }else{
       setIsValidator(true);
@@ -76,48 +79,28 @@ function App() {
  
   return (
     <React.Fragment>
-      <div className="App"> 
-        <i><Typography variant="h1"> Pinball Machine Locator </Typography></i>
-        <div className="instructions">
-          <Typography variant="h9"> - Use this tool to find the nearest pinball machines within 50 miles of entered coordinates </Typography>
-          <br />
-          <Typography variant="h9"> - Click <b>SEARCH</b> after entering latitude and longitude coordinates </Typography>
-          <br />
-          <Typography variant="h9"> - Click <b>NEAR ME</b> to auto-populate current geo-coordinates </Typography>
-          <br />
-          <Typography variant="h9"> - Click <b>CLEAR</b> to clear coordinate values </Typography>
-          <br />
-          <Typography variant="h9"> - Click <b>CLEAR LIST</b> to clear list results </Typography>
-        </div>
-      </div>
-      <div className="form">
-        <Form 
-          searchHandler={searchHandler}
-          clearHandler={clearHandler} 
-          clearListHandler={clearListHandler}
-          latitude={latitude} 
-          longitude={longitude}
-          setLatitude={setLatitude}
-          setLongitude={setLongitude}
-          getLocation={getLocation}
-          locationData={locationData}
-        />
-        {isValidator && <Typography color="secondary"> Must Enter Latitude and Longitude Values</Typography>}
-        { validLatitude && <Typography color="secondary"> Latitude Value Must be Between -90 and 90</Typography>}
-        { validLongitude && <Typography color="secondary"> Longitude Value Must be Between -180 and 180</Typography>}
-      </div>
-      <div className="list">
-        <Typography> Pinball Machines within 50 miles of entered coordinates</Typography>
-        <br/>
-        <Typography variant="h5"> {(typeof(locationDataLength) !== 'undefined' && locationDataLength > 1 ) && `${locationDataLength} Results`} </Typography>
-        <Typography variant="h5"> {(typeof(locationDataLength) !== 'undefined' && locationDataLength === 1) && `${locationDataLength} Result`} </Typography>
-        <Typography variant="h5"> {(typeof(locationDataLength) === 'undefined' && isClear === false) && "0 Results"} </Typography>
-        <Typography variant="h5"> {(typeof(locationDataLength) === 'undefined' && isClear === true) && "Enter Search Parameters"} </Typography>
-        <Divider /> 
-        {(locationData && locationData?.locations) && (locationData?.locations).map((location, index) => {
-          return <ListItemText key={index}> {`${index + 1}. ${location.name.toUpperCase()}   - ${location.street} ${location.city}, ${location.state}`} </ListItemText>
-        })}
-      </div>
+      <Header />
+      <Form 
+        searchHandler={searchHandler}
+        clearHandler={clearHandler} 
+        clearListHandler={clearListHandler}
+        latitude={latitude} 
+        longitude={longitude}
+        setLatitude={setLatitude}
+        setLongitude={setLongitude}
+        getLocation={getLocation}
+        locationData={locationData}
+      />
+      <Validators 
+        isValidator={isValidator} 
+        validLatitude={validLatitude} 
+        validLongitude={validLongitude}
+      />
+      <List 
+        locationDataLength={locationDataLength} 
+        locationData={locationData} 
+        isClear={isClear}
+      />
     </React.Fragment>
   );
 };
